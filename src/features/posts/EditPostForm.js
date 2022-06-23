@@ -6,8 +6,8 @@ import { postUpdated } from "./postsSlice";
 
 export const EditPostForm = ({ match }) => {
   const { postId } = match.params;
-  console.log("!!!");
-  console.log(postId);
+  // console.log("!!!");
+  // console.log(postId);
 
   const post = useSelector((state) =>
     state.posts.find((post) => post.id === postId)
@@ -25,6 +25,7 @@ export const EditPostForm = ({ match }) => {
   const onSavePostClicked = () => {
     if (title && content) {
       dispatch(postUpdated({ id: postId, title, content }));
+      // back to view post
       history.push(`/posts/${postId}`);
     }
   };
