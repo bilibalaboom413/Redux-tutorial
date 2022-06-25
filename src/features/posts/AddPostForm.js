@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 // import { nanoid } from "@reduxjs/toolkit";
 
-import { postAdded, addNewPost } from "./postsSlice";
+import { addNewPost } from './postsSlice'
 
 export const AddPostForm = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [userId, setUserId] = useState("");
-  const [addRequestStatus, setAddRequestStatus] = useState("idle");
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [userId, setUserId] = useState('')
+  const [addRequestStatus, setAddRequestStatus] = useState('idle')
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const users = useSelector((state) => state.users);
+  const users = useSelector((state) => state.users)
 
-  const onTitleChanged = (e) => setTitle(e.target.value);
-  const onContentChanged = (e) => setContent(e.target.value);
-  const onAuthorChanged = (e) => setUserId(e.target.value);
+  const onTitleChanged = (e) => setTitle(e.target.value)
+  const onContentChanged = (e) => setContent(e.target.value)
+  const onAuthorChanged = (e) => setUserId(e.target.value)
 
   // const onSavePostClicked = () => {
   // if (title && content) {
@@ -39,34 +39,34 @@ export const AddPostForm = () => {
   // };
 
   const canSave =
-    [title, content, userId].every(Boolean) && addRequestStatus === "idle";
+    [title, content, userId].every(Boolean) && addRequestStatus === 'idle'
 
   const onSavePostClicked = async () => {
     if (canSave) {
       try {
-        setAddRequestStatus("pending");
+        setAddRequestStatus('pending')
         /**
          *  adds a .unwrap() function to the returned Promise,
          * which will return a new Promise that either has the actual action.payload value
          *  from a fulfilled action, or throws an error if it's the rejected action.
          */
-        await dispatch(addNewPost({ title, content, user: userId })).unwrap();
-        setTitle("");
-        setContent("");
-        setUserId("");
+        await dispatch(addNewPost({ title, content, user: userId })).unwrap()
+        setTitle('')
+        setContent('')
+        setUserId('')
       } catch (err) {
-        console.error("Failed to save the post: ", err);
+        console.error('Failed to save the post: ', err)
       } finally {
-        setAddRequestStatus("idle");
+        setAddRequestStatus('idle')
       }
     }
-  };
+  }
 
   const usersOptions = users.map((user) => (
     <option key={user.id} value={user.id}>
       {user.name}
     </option>
-  ));
+  ))
 
   return (
     <section>
@@ -98,5 +98,5 @@ export const AddPostForm = () => {
         </button>
       </form>
     </section>
-  );
-};
+  )
+}
