@@ -8,7 +8,7 @@ import { TimeAgo } from './TimeAgo'
 import { ReactionButtons } from './ReactionButtons'
 import { selectAllPosts, fetchPosts } from './postsSlice'
 
-const PostExcerpt = ({ post }) => {
+let PostExcerpt = ({ post }) => {
   return (
     <article className="post-excerpt" key={post.id}>
       <h3>{post.title}</h3>
@@ -25,6 +25,10 @@ const PostExcerpt = ({ post }) => {
     </article>
   )
 }
+
+// ensure that the component inside of it only re-renders
+// if the props have actually changed.
+PostExcerpt = React.memo(PostExcerpt)
 
 export const PostsList = () => {
   const dispatch = useDispatch()
