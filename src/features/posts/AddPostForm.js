@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { selectAllUsers } from '../users/usersSlice'
 // import { nanoid } from "@reduxjs/toolkit";
 
 import { addNewPost } from './postsSlice'
@@ -12,7 +13,8 @@ export const AddPostForm = () => {
 
   const dispatch = useDispatch()
 
-  const users = useSelector((state) => state.users)
+  // const users = useSelector((state) => state.users)
+  const users = useSelector(selectAllUsers)
 
   const onTitleChanged = (e) => setTitle(e.target.value)
   const onContentChanged = (e) => setContent(e.target.value)
@@ -77,7 +79,7 @@ export const AddPostForm = () => {
           type="text"
           id="postTitle"
           name="postTitle"
-          placeholder="What you want to post"
+          placeholder="Make a title for your post"
           value={title}
           onChange={onTitleChanged}
         />
@@ -90,6 +92,7 @@ export const AddPostForm = () => {
         <textarea
           id="postContent"
           name="postContent"
+          placeholder="Input something interesting"
           value={content}
           onChange={onContentChanged}
         />

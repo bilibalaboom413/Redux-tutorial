@@ -1,5 +1,9 @@
 // import React from 'react'
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import {
+  createSlice,
+  createAsyncThunk,
+  createEntityAdapter,
+} from '@reduxjs/toolkit'
 
 import { client } from '../../api/client'
 
@@ -20,13 +24,20 @@ export const fetchNotifications = createAsyncThunk(
   }
 )
 
+const notificationAdapter = createEntityAdapter({
+  sortComparer: (a, b) => b.date.localeCompare(a.date),
+})
+
 const notificationsSlice = createSlice({
   name: 'notifications',
-  initialState: [],
+  // initialState: [],
+  initialState: notificationAdapter.getInitialState(),
   reducers: {
     // Marks all notifications as read
     allNotificationsRead(state, action) {
-      state.forEach((notification) => {
+      // state.forEach((notification) => {
+      //   notification.read = true
+      Object.values(state.entities).forEach((notification) => {
         notification.read = true
       })
     },
@@ -38,17 +49,24 @@ const notificationsSlice = createSlice({
        * so we can pass them as separate arguments to state.push(),
        * and the array will add each item
        */
-      state.push(...action.payload)
+      // state.push(...action.payload)
       // Any notifications we've read are no longer new
-      state.forEach((notification) => (notification.isNew = !notification.read))
+      // state.forEach((notification) => (notification.isNew = !notification.read))
       // console.log(state)
-      state.sort((a, b) => b.date.localeCompare(a.date))
+      // state.sort((a, b) => b.date.localeCompare(a.date))
+
+      notificationAdapter.upsertMany(state, action.payload)
+      Object.values(state.entities).forEach((notification) => {
+        notification.isNew = !notification.read
+      })
     })
   },
 })
 
 export default notificationsSlice.reducer
 
-export const selectAllNotifications = (state) => state.notifications
+// export const selectAllNotifications = (state) => state.notifications
+export const { selectAll: selectAllNotifications } =
+  notificationAdapter.getSelectors((state) => state.notifications)
 
 export const { allNotificationsRead } = notificationsSlice.actions
