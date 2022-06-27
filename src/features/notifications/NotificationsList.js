@@ -14,7 +14,7 @@ export const NotificationsList = () => {
   const dispatch = useDispatch()
 
   const notifications = useSelector(selectAllNotifications)
-  console.log(notifications)
+  // console.log(notifications)
   const users = useSelector(selectAllUsers)
   // avoid flashing of old data as this component updates
   useLayoutEffect(() => {
