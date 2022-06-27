@@ -12,7 +12,7 @@ export const Navbar = () => {
   const numUnreadNotifications = notifications.filter((n) => !n.read).length
 
   let unreadNotificationsBadge
-  console.log(numUnreadNotifications)
+  // console.log(numUnreadNotifications)
   if (numUnreadNotifications > 0) {
     unreadNotificationsBadge = (
       <span className="badge">{numUnreadNotifications}</span>

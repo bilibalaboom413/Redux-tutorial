@@ -6,11 +6,15 @@ import {
 } from '@reduxjs/toolkit'
 import { client } from '../../api/client'
 
+// Normalized state structure is a recommended approach for storing items
 const postsAdapter = createEntityAdapter({
   // keep an array of all post IDs sorted with the newest post first
   sortComparer: (a, b) => b.date.localeCompare(a.date),
 })
+
 // generates an empty {ids: [], entities: {}}
+// adapter.getInitialState, which can accept
+// additional state fields like loading state
 const initialState = postsAdapter.getInitialState({
   status: 'idle',
   error: null,
@@ -41,6 +45,7 @@ const postsSlice = createSlice({
   reducers: {
     reactionAdded(state, action) {
       const { postId, reaction } = action.payload
+      // console.log(state.entities)
       const existingPost = state.entities[postId]
       // const existingPost = state.posts.find((post) => post.id === postId)
       if (existingPost) {
@@ -113,7 +118,9 @@ export const {
  * all of the arguments into each of our input selectors.
  * Whatever those input selectors return becomes the arguments for the output selector.
  */
+// createSelector function that generates memoized selectors
+// that will only recalculate results when the inputs change.
 export const selectPostsByUser = createSelector(
-  [selectAllPosts, (state, userId) => userId],
-  (posts, userId) => posts.filter((post) => post.user === userId)
+  [selectAllPosts, (state, userId) => userId], // "input selector" functions
+  (posts, userId) => posts.filter((post) => post.user === userId) // "output selector" functions
 )

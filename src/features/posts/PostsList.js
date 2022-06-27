@@ -14,6 +14,7 @@ import {
 } from './postsSlice'
 
 let PostExcerpt = ({ postId }) => {
+  // This way, <PostsList> only needs to re-render when that IDs array changes.
   const post = useSelector((state) => selectPostById(state, postId))
 
   return (
@@ -34,8 +35,8 @@ let PostExcerpt = ({ postId }) => {
 }
 
 // ensure that the component inside of it only re-renders
-// if the props have actually changed.
-PostExcerpt = React.memo(PostExcerpt)
+// if the props have actually changed. Just a simple way
+// PostExcerpt = React.memo(PostExcerpt)
 
 export const PostsList = () => {
   const dispatch = useDispatch()

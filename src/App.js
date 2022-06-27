@@ -24,6 +24,7 @@ function App() {
           <Route
             exact
             path="/"
+            // put two component in one path
             render={() => (
               <React.Fragment>
                 <AddPostForm />
