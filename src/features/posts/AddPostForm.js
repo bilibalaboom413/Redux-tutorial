@@ -4,16 +4,21 @@ import { selectAllUsers } from '../users/usersSlice'
 // import { nanoid } from "@reduxjs/toolkit";
 
 import { addNewPost } from './postsSlice'
+import { useAddNewPostMutation } from '../api/apiSlice'
 
 export const AddPostForm = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [userId, setUserId] = useState('')
-  const [addRequestStatus, setAddRequestStatus] = useState('idle')
+  // const [addRequestStatus, setAddRequestStatus] = useState('idle')
 
-  const dispatch = useDispatch()
-
+  // const dispatch = useDispatch()
   // const users = useSelector((state) => state.users)
+
+  // Mutation hooks return an array with two values:
+  // trigger function: make request to the server
+  // The second value is an object with metadata about the current in-progress request, if any.
+  const [addNewPost, { isLoading }] = useAddNewPostMutation()
   const users = useSelector(selectAllUsers)
 
   const onTitleChanged = (e) => setTitle(e.target.value)
@@ -40,27 +45,30 @@ export const AddPostForm = () => {
   //   }
   // };
 
-  const canSave =
-    [title, content, userId].every(Boolean) && addRequestStatus === 'idle'
+  // const canSave =
+  //   [title, content, userId].every(Boolean) && addRequestStatus === 'idle'
+  const canSave = [title, content, userId].every(Boolean) && !isLoading
 
   const onSavePostClicked = async () => {
     if (canSave) {
       try {
-        setAddRequestStatus('pending')
+        // setAddRequestStatus('pending')
         /**
          *  adds a .unwrap() function to the returned Promise,
          * which will return a new Promise that either has the actual action.payload value
          *  from a fulfilled action, or throws an error if it's the rejected action.
          */
-        await dispatch(addNewPost({ title, content, user: userId })).unwrap()
+        // await dispatch(addNewPost({ title, content, user: userId })).unwrap()
+        await addNewPost({ title, content, user: userId }).unwrap()
         setTitle('')
         setContent('')
         setUserId('')
       } catch (err) {
         console.error('Failed to save the post: ', err)
-      } finally {
-        setAddRequestStatus('idle')
       }
+      // finally {
+      //   setAddRequestStatus('idle')
+      // }
     }
   }
 
