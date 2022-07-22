@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectAllUsers } from '../users/usersSlice'
-// import { nanoid } from "@reduxjs/toolkit";
+import { useSelector } from 'react-redux'
 
-import { addNewPost } from './postsSlice'
+import { selectAllUsers } from '../users/usersSlice'
+// import { addNewPost } from './postsSlice'
 import { useAddNewPostMutation } from '../api/apiSlice'
+import { Spinner } from '../../components/Spinner'
 
 export const AddPostForm = () => {
   const [title, setTitle] = useState('')
@@ -78,6 +78,8 @@ export const AddPostForm = () => {
     </option>
   ))
 
+  const spinner = isLoading ? <Spinner size="30px" /> : null
+
   return (
     <section>
       <h2>Add a New Post</h2>
@@ -104,9 +106,16 @@ export const AddPostForm = () => {
           value={content}
           onChange={onContentChanged}
         />
-        <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
-          Save Post
-        </button>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
+            Save Post
+          </button>
+        </div>
       </form>
     </section>
   )

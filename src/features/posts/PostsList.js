@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useMemo } from 'react'
 // No need for RTK
 // import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -10,6 +10,8 @@ import { ReactionButtons } from './ReactionButtons'
 
 import classnames from 'classnames'
 
+import { useGetPostsQuery } from '../api/apiSlice'
+
 // No need for RTK
 // import {
 //   // selectAllPosts,
@@ -17,9 +19,6 @@ import classnames from 'classnames'
 //   selectPostIds,
 //   selectPostById,
 // } from './postsSlice'
-
-import { useGetPostsQuery } from '../api/apiSlice'
-import { useMemo } from 'react'
 
 // let PostExcerpt = ({ postId }) => {
 // This way, <PostsList> only needs to re-render when that IDs array changes.
@@ -69,7 +68,7 @@ export const PostsList = () => {
     isFetching,
     isError,
     error, //  a serialized error object
-    refetch,
+    // refetch,
   } = useGetPostsQuery()
 
   const sortedPosts = useMemo(() => {
@@ -118,7 +117,6 @@ export const PostsList = () => {
   return (
     <section className="posts-list">
       <h2>Posts</h2>
-      <button onClick={refetch}>Refetch Posts</button>
       {content}
     </section>
   )
